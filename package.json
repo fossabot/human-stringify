@@ -1,0 +1,34 @@
+{
+    "name": "human-stringify",
+    "version": "0.1.0",
+    "description": "JSON.stringify for humans",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "scripts": {
+        "build": "tsc",
+        "test": "jest"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/acchou/human-stringify.git"
+    },
+    "author": "Andy Chou",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/acchou/human-stringify/issues"
+    },
+    "homepage": "https://github.com/acchou/human-stringify#readme",
+    "devDependencies": {
+        "@types/jest": "^22.2.3",
+        "jest": "^22.4.3",
+        "ts-jest": "^22.4.4",
+        "typescript": "^2.8.3"
+    },
+    "jest": {
+        "transform": {
+            "^.+\\.tsx?$": "ts-jest"
+        },
+        "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+        "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"]
+    }
+}
