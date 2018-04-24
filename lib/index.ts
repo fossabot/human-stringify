@@ -10,7 +10,7 @@
  * not valid JSON. Some parts of the string may be elided with a summary; other
  * parts may be enclosed in quotes even if they are not strings.
  */
-export function humanStringify(
+export default function humanStringify(
     value: any,
     options: {
         compact?: boolean;

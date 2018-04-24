@@ -1,4 +1,4 @@
-import { humanStringify } from "../lib";
+import humanStringify from "../lib";
 
 describe("humanStringify", () => {
     it("converts numbers to strings", () => {
