@@ -42,8 +42,8 @@ describe("humanStringify", () => {
 
     it("returns undefined for Functions", () => {
         function F() {}
-        expect(humanStringify(() => {})).toBe("function(){}");
-        expect(humanStringify(() => {})).toBe("function(){}");
+        expect(humanStringify(() => {})).toBe("function(){...}");
+        expect(humanStringify(() => {})).toBe("function(){...}");
     });
 
     it("returns undefined for Symbols", () => {
@@ -73,25 +73,10 @@ describe("humanStringify", () => {
 
     it("elides large objects", () => {
         const bigObj: any = {};
-        for (let i = 0; i < 200; i++) {
+        for (let i = 0; i < 1000; i++) {
             bigObj["index" + i] = i;
         }
         expect(humanStringify(bigObj)).toBe("{...large object}");
-    });
-
-    it("elides Uint8Arrays", () => {
-        const u8 = new Uint8Array([0, 1, 2]);
-        expect(humanStringify(u8)).toBe(`Uint8Array(len: 3)`);
-    });
-
-    it("elides Uint8ClampedArrays", () => {
-        const u8 = new Uint8ClampedArray([0, 1, 2]);
-        expect(humanStringify(u8)).toBe(`Uint8ClampedArray(len: 3)`);
-    });
-
-    it("elides ArrayBuffers", () => {
-        const abuffer = new ArrayBuffer(100);
-        expect(humanStringify(abuffer)).toBe(`ArrayBuffer(byteLength: 100)`);
     });
 
     it("recursively stringifies complex objects", () => {
@@ -119,5 +104,72 @@ describe("humanStringify", () => {
     "y"
   ]
 }`);
+    });
+
+    it("handles Infinity and NaN", () => {
+        expect(humanStringify(Infinity)).toBe(`Infinity`);
+        expect(humanStringify(NaN)).toBe(`NaN`);
+    });
+
+    it("handles builin functions", () => {
+        expect(humanStringify(eval)).toBe("function(){...}");
+    });
+
+    it("handles fundamental objects", () => {
+        expect(humanStringify(new Object())).toBe("{}");
+        expect(humanStringify(new Function())).toBe("function(){...}");
+        expect(humanStringify(new Boolean())).toBe("false");
+        expect(humanStringify(new String())).toBe(`""`);
+        expect(humanStringify(new Number())).toBe("0");
+        expect(humanStringify(Math)).toBe("[object Math]");
+        expect(humanStringify(new Date(0))).toBe("Thu, 01 Jan 1970 00:00:00 GMT");
+        expect(humanStringify(new RegExp(/./))).toBe("RegExp(/./)");
+        expect(humanStringify(new RegExp(/./g))).toBe("RegExp(/./g)");
+    });
+
+    it("elides typed arrays", () => {
+        expect(humanStringify(new Uint8Array([0, 1, 2]))).toBe(`Uint8Array(len: 3)`);
+        expect(humanStringify(new Int8Array([0, 1, 2]))).toBe(`Int8Array(len: 3)`);
+        expect(humanStringify(new Uint8Array([0, 1, 2]))).toBe(`Uint8Array(len: 3)`);
+        expect(humanStringify(new Uint8ClampedArray([0, 1, 2]))).toBe(
+            `Uint8ClampedArray(len: 3)`
+        );
+        expect(humanStringify(new Int16Array([0, 1, 2]))).toBe(`Int16Array(len: 3)`);
+        expect(humanStringify(new Uint16Array([0, 1, 2]))).toBe(`Uint16Array(len: 3)`);
+        expect(humanStringify(new Int32Array([0, 1, 2]))).toBe(`Int32Array(len: 3)`);
+        expect(humanStringify(new Uint32Array([0, 1, 2]))).toBe(`Uint32Array(len: 3)`);
+        expect(humanStringify(new Float32Array([0, 1, 2]))).toBe(`Float32Array(len: 3)`);
+        expect(humanStringify(new Float64Array([0, 1, 2]))).toBe(`Float64Array(len: 3)`);
+    });
+
+    it("handles keyed collections", () => {
+        expect(humanStringify(new Map())).toBe(`Map(size: 0)`);
+        expect(humanStringify(new Set())).toBe(`Set(size: 0)`);
+    });
+
+    it("elides ArrayBuffers", () => {
+        const abuffer = new ArrayBuffer(100);
+        expect(humanStringify(abuffer)).toBe(`ArrayBuffer(byteLength: 100)`);
+        const view = new DataView(abuffer);
+        expect(humanStringify(view)).toBe(`DataView(byteLength: 100, byteOffset: 0)`);
+    });
+
+    it("handles Error objects", () => {
+        expect(humanStringify(new Error("msg"))).toBe(`Error("msg")`);
+        expect(humanStringify(new EvalError("msg"))).toBe(`EvalError("msg")`);
+        expect(humanStringify(new RangeError("msg"))).toBe(`RangeError("msg")`);
+        expect(humanStringify(new ReferenceError("msg"))).toBe(`ReferenceError("msg")`);
+        expect(humanStringify(new SyntaxError("msg"))).toBe(`SyntaxError("msg")`);
+        expect(humanStringify(new TypeError("msg"))).toBe(`TypeError("msg")`);
+        expect(humanStringify(new URIError("msg"))).toBe(`URIError("msg")`);
+    });
+
+    it("handles control abstractions", () => {
+        expect(humanStringify(Promise.resolve())).toBe(`Promise()`);
+
+        function* generator() {
+            yield 1;
+        }
+        expect(humanStringify(generator())).toBe(``);
     });
 });
