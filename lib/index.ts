@@ -1,6 +1,3 @@
-const GeneratorFunction = Object.getPrototypeOf(function*() {}).constructor;
-const AsyncFunction = Object.getPrototypeOf(async function() {}).constructor;
-
 /**
  *
  * @export
@@ -147,12 +144,6 @@ export default function humanStringify(
                 return `DataView(byteLength: ${value.byteLength}, byteOffset: ${
                     value.byteOffset
                 })`;
-            }
-            if (value instanceof GeneratorFunction) {
-                return `GeneratorFunction()`;
-            }
-            if (value instanceof AsyncFunction) {
-                return `AsyncFunction()`;
             }
             if (value === Math) {
                 return String(value);

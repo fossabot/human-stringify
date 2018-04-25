@@ -164,12 +164,33 @@ describe("humanStringify", () => {
         expect(humanStringify(new URIError("msg"))).toBe(`URIError("msg")`);
     });
 
-    it("handles control abstractions", () => {
+    it("handles Promises", () => {
         expect(humanStringify(Promise.resolve())).toBe(`Promise()`);
+    });
 
+    it("handles generators", () => {
         function* generator() {
             yield 1;
         }
-        expect(humanStringify(generator())).toBe(``);
+        expect(humanStringify(generator(), { compact: true })).toBe(
+            `{"next":function(){...},"throw":function(){...},"return":function(){...}}`
+        );
+    });
+
+    it("handles GeneratorFunction", () => {
+        const GeneratorFunction = Object.getPrototypeOf(function*(): Iterable<any> {})
+            .constructor;
+        expect(humanStringify(new GeneratorFunction())).toBe(`function(){...}`);
+    });
+
+    it("handles async generator", () => {
+        if (Symbol["asyncIterator"] === undefined)
+            (Symbol as any)["asyncIterator"] = Symbol.for("asyncIterator");
+        async function* asyncgenerator() {
+            yield 1;
+        }
+        expect(humanStringify(asyncgenerator(), { compact: true })).toBe(
+            `{"next":function(){...},"throw":function(){...},"return":function(){...}}`
+        );
     });
 });
