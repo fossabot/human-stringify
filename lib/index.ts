@@ -143,9 +143,6 @@ export default function humanStringify(
                     value.byteOffset
                 })`;
             }
-            if (proto === Intl.Collator) {
-                return Object.prototype.toString.call(value);
-            }
 
             if (value instanceof Error) {
                 return `${value.name}("${value.message}")`;
