@@ -121,7 +121,6 @@ describe("humanStringify", () => {
         expect(humanStringify(new Boolean())).toBe("false");
         expect(humanStringify(new String())).toBe(`""`);
         expect(humanStringify(new Number())).toBe("0");
-        expect(humanStringify(Math)).toBe("[object Math]");
         expect(humanStringify(new Date(0))).toBe("Thu, 01 Jan 1970 00:00:00 GMT");
         expect(humanStringify(new RegExp(/./))).toBe("RegExp(/./)");
         expect(humanStringify(new RegExp(/./g))).toBe("RegExp(/./g)");
@@ -145,6 +144,8 @@ describe("humanStringify", () => {
     it("handles keyed collections", () => {
         expect(humanStringify(new Map())).toBe(`Map(size: 0)`);
         expect(humanStringify(new Set())).toBe(`Set(size: 0)`);
+        expect(humanStringify(new WeakMap())).toBe(`WeakMap()`);
+        expect(humanStringify(new WeakSet())).toBe(`WeakSet()`);
     });
 
     it("elides ArrayBuffers", () => {

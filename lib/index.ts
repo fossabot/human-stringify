@@ -57,22 +57,23 @@ export default function humanStringify(
             return String(value);
         }
         if (typeof value === "object") {
-            if (value instanceof Boolean) {
+            const proto = Object.getPrototypeOf(value);
+            if (proto === Boolean.prototype) {
                 return String(value.valueOf());
             }
-            if (value instanceof String) {
+            if (proto === String.prototype) {
                 return `"${value.valueOf()}"`;
             }
-            if (value instanceof Number) {
+            if (proto === Number.prototype) {
                 return String(value.valueOf());
             }
-            if (value instanceof Array) {
+            if (proto === Array.prototype) {
                 if (value.length > limit) {
                     return `[...${value.length} elements]`;
                 }
                 if (typeof value[0] === "number") {
                     return `[${value
-                        .map(elem => construct(elem, depth))
+                        .map((elem: number) => String(elem))
                         .join("," + sep)}]`;
                 } else {
                     let rv = "[" + indentLn();
@@ -85,79 +86,87 @@ export default function humanStringify(
                     return rv;
                 }
             }
-            if (value instanceof Promise) {
+            if (proto === Promise.prototype) {
                 return `Promise()`;
             }
-            if (value instanceof Int8Array) {
+            if (proto === Int8Array.prototype) {
                 return `Int8Array(len: ${value.length})`;
             }
-            if (value instanceof Uint8Array) {
+            if (proto === Uint8Array.prototype) {
                 return `Uint8Array(len: ${value.length})`;
             }
-            if (value instanceof Uint8ClampedArray) {
+            if (proto === Uint8ClampedArray.prototype) {
                 return `Uint8ClampedArray(len: ${value.length})`;
             }
-            if (value instanceof Int16Array) {
+            if (proto === Int16Array.prototype) {
                 return `Int16Array(len: ${value.length})`;
             }
-            if (value instanceof Uint16Array) {
+            if (proto === Uint16Array.prototype) {
                 return `Uint16Array(len: ${value.length})`;
             }
-            if (value instanceof Int32Array) {
+            if (proto === Int32Array.prototype) {
                 return `Int32Array(len: ${value.length})`;
             }
-            if (value instanceof Uint32Array) {
+            if (proto === Uint32Array.prototype) {
                 return `Uint32Array(len: ${value.length})`;
             }
-            if (value instanceof Float32Array) {
+            if (proto === Float32Array.prototype) {
                 return `Float32Array(len: ${value.length})`;
             }
-            if (value instanceof Float64Array) {
+            if (proto === Float64Array.prototype) {
                 return `Float64Array(len: ${value.length})`;
             }
-            if (value instanceof Error) {
-                return `${value.name}("${value.message}")`;
-            }
-            if (value instanceof Date) {
+            if (proto === Date.prototype) {
                 return value.toUTCString();
             }
-            if (value instanceof RegExp) {
+            if (proto === RegExp.prototype) {
                 return `RegExp(/${value.source}/${value.flags})`;
             }
-            if (value instanceof Map) {
+            if (proto === Map.prototype) {
                 return `Map(size: ${value.size})`;
             }
-            if (value instanceof Set) {
+            if (proto === Set.prototype) {
                 // return `Set(${construct(value.values(), depth)})`;
                 return `Set(size: ${value.size})`;
             }
-            if (value instanceof WeakMap) {
+            if (proto === WeakMap.prototype) {
                 return `WeakMap()`;
             }
-            if (value instanceof WeakSet) {
+            if (proto === WeakSet.prototype) {
                 return `WeakSet()`;
             }
-            if (value instanceof ArrayBuffer) {
+            if (proto === ArrayBuffer.prototype) {
                 return `ArrayBuffer(byteLength: ${value.byteLength})`;
             }
-            if (value instanceof DataView) {
+            if (proto === DataView.prototype) {
                 return `DataView(byteLength: ${value.byteLength}, byteOffset: ${
                     value.byteOffset
                 })`;
             }
-            if (value === Math) {
-                return String(value);
+            if (proto === Intl.Collator) {
+                return Object.prototype.toString.call(value);
             }
 
+            if (value instanceof Error) {
+                return `${value.name}("${value.message}")`;
+            }
+
+            let type = Object.prototype.toString.call(value);
+            let typeComment = `/* ${type} */`;
+            if (type === "[object Object]") {
+                type = "";
+                typeComment = "";
+            }
             if (nKeysGreaterThan(value, limit)) {
-                return `{...large object}`;
+                return `{${typeComment}...large object}`;
             }
 
             const keys = Object.keys(value);
             if (keys.length === 0) {
-                return "{}";
+                return `{${typeComment}}`;
             }
-            let rv = "{" + indentLn();
+
+            let rv = "{" + typeComment + indentLn();
             let values = [];
             for (const key of keys) {
                 values.push(
