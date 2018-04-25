@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/acchou/human-stringify.svg?branch=master)](https://travis-ci.org/acchou/human-stringify) [![Coverage Status](https://coveralls.io/repos/github/acchou/human-stringify/badge.svg?branch=master)](https://coveralls.io/github/acchou/human-stringify?branch=master)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Facchou%2Fhuman-stringify.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Facchou%2Fhuman-stringify?ref=badge_shield)
 
 # human-stringify
 
@@ -56,3 +57,7 @@ console.log(`obj is ${humanStringify(obj)}`);
 ## Running Tests
 
     $ npm run test
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Facchou%2Fhuman-stringify.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Facchou%2Fhuman-stringify?ref=badge_large)
