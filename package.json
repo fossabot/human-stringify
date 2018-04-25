@@ -1,6 +1,6 @@
 {
     "name": "human-stringify",
-    "version": "0.1.0",
+    "version": "0.1.2",
     "description": "JSON.stringify for humans",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -29,13 +29,6 @@
             "^.+\\.tsx?$": "ts-jest"
         },
         "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-        "moduleFileExtensions": [
-            "ts",
-            "tsx",
-            "js",
-            "jsx",
-            "json",
-            "node"
-        ]
+        "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"]
     }
 }
