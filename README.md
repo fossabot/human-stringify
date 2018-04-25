@@ -1,6 +1,4 @@
-[![Build Status](https://travis-ci.org/acchou/human-stringify.svg?branch=master)](https://travis-ci.org/acchou/human-stringify)
-
-[![Coverage Status](https://coveralls.io/repos/github/acchou/human-stringify/badge.svg?branch=master)](https://coveralls.io/github/acchou/human-stringify?branch=master)
+[![Build Status](https://travis-ci.org/acchou/human-stringify.svg?branch=master)](https://travis-ci.org/acchou/human-stringify) [![Coverage Status](https://coveralls.io/repos/github/acchou/human-stringify/badge.svg?branch=master)](https://coveralls.io/github/acchou/human-stringify?branch=master)
 
 # human-stringify
 
